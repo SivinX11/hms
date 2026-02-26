@@ -1,15 +1,18 @@
 from __future__ import annotations
 
+from pathlib import Path
 import sqlite3
 from typing import Any, Iterable
 
 from flask import g
 
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = (BASE_DIR / "src" / "database" / "hospital_management.db").resolve()
 
-def get_db(db_path: str) -> sqlite3.Connection:
-    """Get a per-request SQLite connection."""
+def get_db() -> sqlite3.Connection:
+    """Get a per-request SQLite connection (single DB path)."""
     if "db" not in g:
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA foreign_keys = ON;")
         g.db = conn
