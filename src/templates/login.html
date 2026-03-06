@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% set title = 'Login | HMS' %}
+
+{% block content %}
+  <div class="card">
+    <h1>Login</h1>
+    <p class="muted">Sign in to continue.</p>
+
+    <form method="post" action="{{ url_for('auth.login_post') }}" class="form">
+      <label>
+        Email
+        <input type="email" name="email" placeholder="name@example.com" required />
+      </label>
+
+      <label>
+        Password
+        <input type="password" name="password" placeholder="••••••••" required />
+      </label>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <div class="footnote">
+      New here? <a href="{{ url_for('auth.register') }}">Create an account</a>
+    </div>
+  </div>
+{% endblock %}

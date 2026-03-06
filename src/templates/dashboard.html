@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% set title = 'Dashboard | HMS' %}
+
+{% block content %}
+  <div class="card">
+    <h1>Dashboard</h1>
+    <p class="muted">You are logged in.</p>
+
+    <div class="kv">
+      <div><span class="k">Name:</span> {{ full_name }}</div>
+      <div><span class="k">Role:</span> {{ role }}</div>
+    </div>
+
+    <p class="muted" style="margin-top: 16px;">
+      Next step: connect this dashboard to HMS features (doctors, patients, appointments).
+    </p>
+  </div>
+{% endblock %}
