@@ -7,7 +7,17 @@ python -m venv .venv
 source .venv/bin/activate  # (Windows: .venv\Scripts\activate)
 
 pip install -r requirements.txt
+```
 
+### Initialize DB
+
+```bash
+python sql_init.py
+```
+
+### Run Server
+
+```bash
 python app.py
 ```
 

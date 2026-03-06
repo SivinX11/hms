@@ -16,7 +16,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import get_db
 
-
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -44,7 +43,7 @@ def login_post():
         flash("Please enter both email and password.", "error")
         return redirect(url_for("auth.login"))
 
-    db = get_db(current_app.config["DB_PATH"])
+    db = get_db()
     user = db.execute(
         "SELECT user_id, full_name, email, password_hash, role, is_active FROM User WHERE email = ?",
         (email,),
@@ -96,7 +95,7 @@ def register_post():
         flash("Passwords do not match.", "error")
         return redirect(url_for("auth.register"))
 
-    db = get_db(current_app.config["DB_PATH"])
+    db = get_db()
 
     existing = db.execute("SELECT 1 FROM User WHERE email = ?", (email,)).fetchone()
     if existing:
