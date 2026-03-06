@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import os
-from flask import Flask, redirect, url_for
+
+from flask import Flask, redirect, render_template, url_for
 
 from auth import auth_bp
-from db import close_db, init_db
+from db import close_db, get_db, init_db
 
 
 def create_app() -> Flask:
@@ -37,6 +38,35 @@ def create_app() -> Flask:
     def index():
         # Send users to login by default
         return redirect(url_for("auth.login"))
+
+    @app.get("/database")
+    def show_all_data():
+        """Display all data from the database."""
+        db = get_db()
+
+        # Fetch data from all tables
+        users = db.execute("SELECT * FROM User;").fetchall()
+        doctors = db.execute("SELECT * FROM Doctor;").fetchall()
+        patients = db.execute("SELECT * FROM Patient;").fetchall()
+        appointments = db.execute("SELECT * FROM Appointment;").fetchall()
+
+        # Convert rows to dictionaries for easier template rendering
+        users_list = [dict(row) for row in users]
+        doctors_list = [dict(row) for row in doctors]
+        patients_list = [dict(row) for row in patients]
+        appointments_list = [dict(row) for row in appointments]
+
+        return render_template(
+            "database.html",
+            users=users_list,
+            doctors=doctors_list,
+            patients=patients_list,
+            appointments=appointments_list,
+            users_count=len(users_list),
+            doctors_count=len(doctors_list),
+            patients_count=len(patients_list),
+            appointments_count=len(appointments_list),
+        )
 
     return app
 
