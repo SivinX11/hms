@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% set title = 'Register | HMS' %}
+
+{% block content %}
+  <div class="card">
+    <h1>Register</h1>
+    <p class="muted">Create your account.</p>
+
+    <form method="post" action="{{ url_for('auth.register_post') }}" class="form">
+      <label>
+        Full name
+        <input type="text" name="full_name" placeholder="Your name" required />
+      </label>
+
+      <label>
+        Email
+        <input type="email" name="email" placeholder="name@example.com" required />
+      </label>
+
+      <label>
+        Role
+        <select name="role" required>
+          <option value="Patient" selected>Patient</option>
+          <option value="Doctor">Doctor</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </label>
+
+      <label>
+        Password
+        <input type="password" name="password" minlength="8" placeholder="Min 8 characters" required />
+      </label>
+
+      <label>
+        Confirm password
+        <input type="password" name="confirm_password" minlength="8" placeholder="Repeat password" required />
+      </label>
+
+      <button type="submit" class="btn">Create account</button>
+    </form>
+
+    <div class="footnote">
+      Already have an account? <a href="{{ url_for('auth.login') }}">Login</a>
+    </div>
+  </div>
+{% endblock %}
