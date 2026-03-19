@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% set title = 'Admin Dashboard | HMS' %}
+
+{% block content %}
+  <style>
+    .dashboard-container { max-width: 1280px; margin: 0 auto; }
+    .hero, .panel, .table-card, .user-grid-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    }
+    .hero { padding: 24px; margin-bottom: 22px; }
+    .hero h1 { margin: 0 0 8px; }
+    .hero p { margin: 0; color: var(--muted); }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .stat-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(10, 14, 30, 0.55);
+    }
+    .stat-number { font-size: 30px; font-weight: 700; margin-top: 6px; }
+    .stat-label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .panel { padding: 18px; margin-bottom: 22px; }
+    .section-title { margin: 0 0 14px; font-size: 20px; }
+    .appointments-table {
+      width: 100%; border-collapse: collapse; overflow: hidden;
+    }
+    .appointments-table th, .appointments-table td {
+      padding: 12px 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top;
+    }
+    .appointments-table th {
+      color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .status-pill {
+      display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .status-Scheduled { color: #85c3ff; background: rgba(74,144,226,0.18); }
+    .status-Completed { color: #7be6a6; background: rgba(53,208,127,0.18); }
+    .status-Cancelled { color: #ff9d9d; background: rgba(255,107,107,0.18); }
+    .actions-col { min-width: 255px; }
+    .inline-form { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    .inline-form select, .inline-form input[type="date"] {
+      padding: 9px 10px; border-radius: 8px; background: rgba(255,255,255,0.04); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .mini-btn {
+      padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer;
+      background: rgba(255,255,255,0.05); color: var(--text); font-weight: 600;
+    }
+    .mini-btn:hover { background: rgba(255,255,255,0.1); }
+    .mini-btn.danger { border-color: rgba(255,107,107,0.45); color: #ffb6b6; }
+    .mini-btn.success { border-color: rgba(53,208,127,0.45); color: #95f0ba; }
+    .three-col {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .user-grid-card { padding: 18px; }
+    .simple-table { width: 100%; border-collapse: collapse; }
+    .simple-table th, .simple-table td { padding: 10px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .muted-small { color: var(--muted); font-size: 12px; }
+    @media (max-width: 1024px) {
+      .three-col { grid-template-columns: 1fr; }
+      .appointments-table { font-size: 13px; }
+    }
+  </style>
+
+  <div class="dashboard-container">
+    <section class="hero">
+      <h1>Admin Dashboard</h1>
+      <p>Welcome, {{ full_name }}. Monitor users, doctors, patients, and manage appointments from one place.</p>
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Appointments</div><div class="stat-number">{{ total_appointments }}</div></div>
+      <div class="stat-card"><div class="stat-label">Scheduled</div><div class="stat-number">{{ scheduled_count }}</div></div>
+      <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-number">{{ completed_count }}</div></div>
+      <div class="stat-card"><div class="stat-label">Cancelled</div><div class="stat-number">{{ cancelled_count }}</div></div>
+      <div class="stat-card"><div class="stat-label">Upcoming Scheduled</div><div class="stat-number">{{ upcoming_count }}</div></div>
+      <div class="stat-card"><div class="stat-label">Doctors / Patients</div><div class="stat-number">{{ doctors|length }} / {{ patients|length }}</div></div>
+    </section>
+
+    <section class="panel">
+      <h2 class="section-title">Manage Appointments</h2>
+      {% if appointments %}
+        <div class="table-card">
+          <table class="appointments-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for appointment in appointments %}
+                <tr>
+                  <td>#{{ appointment.appointment_id }}</td>
+                  <td>
+                    <strong>{{ appointment.patient_name }}</strong><br>
+                    <span class="muted-small">{{ appointment.patient_email }}</span>
+                  </td>
+                  <td>
+                    <strong>{{ appointment.doctor_name }}</strong><br>
+                    <span class="muted-small">{{ appointment.speciality }} · {{ appointment.doctor_email }}</span>
+                  </td>
+                  <td>{{ appointment.date_of_booking }}</td>
+                  <td>{{ appointment.time_slot }}</td>
+                  <td><span class="status-pill status-{{ appointment.status }}">{{ appointment.status }}</span></td>
+                  <td class="actions-col">
+                    <form class="inline-form" method="post" action="{{ url_for('auth.admin_update_appointment_status', appointment_id=appointment.appointment_id) }}">
+                      <input type="hidden" name="status" value="Completed">
+                      <button type="submit" class="mini-btn success">Complete</button>
+                    </form>
+                    <form class="inline-form" method="post" action="{{ url_for('auth.admin_update_appointment_status', appointment_id=appointment.appointment_id) }}">
+                      <input type="hidden" name="status" value="Cancelled">
+                      <button type="submit" class="mini-btn danger">Cancel</button>
+                    </form>
+                    <form class="inline-form" method="post" action="{{ url_for('auth.admin_reschedule_appointment', appointment_id=appointment.appointment_id) }}">
+                      <input type="date" name="date_of_booking" required>
+                      <select name="time_slot" required>
+                        <option value="">Time slot</option>
+                        <option>09:00 AM</option>
+                        <option>10:00 AM</option>
+                        <option>11:00 AM</option>
+                        <option>12:00 PM</option>
+                        <option>02:00 PM</option>
+                        <option>03:00 PM</option>
+                        <option>04:00 PM</option>
+                        <option>05:00 PM</option>
+                      </select>
+                      <button type="submit" class="mini-btn">Reschedule</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="muted">No appointments found yet.</p>
+      {% endif %}
+    </section>
+
+    <section class="three-col">
+      <div class="user-grid-card">
+        <h2 class="section-title">Doctors</h2>
+        <table class="simple-table">
+          <thead><tr><th>Name</th><th>Speciality</th><th>Fee</th></tr></thead>
+          <tbody>
+            {% for doctor in doctors %}
+              <tr>
+                <td>{{ doctor.doctor_name }}<br><span class="muted-small">{{ doctor.doctor_email }}</span></td>
+                <td>{{ doctor.speciality }}</td>
+                <td>{{ doctor.consultation_fee }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="3">No doctors found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="user-grid-card">
+        <h2 class="section-title">Patients</h2>
+        <table class="simple-table">
+          <thead><tr><th>Name</th><th>DOB</th><th>Gender</th></tr></thead>
+          <tbody>
+            {% for patient in patients %}
+              <tr>
+                <td>{{ patient.patient_name }}<br><span class="muted-small">{{ patient.patient_email }}</span></td>
+                <td>{{ patient.date_of_birth }}</td>
+                <td>{{ patient.gender }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="3">No patients found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="user-grid-card">
+        <h2 class="section-title">Users</h2>
+        <table class="simple-table">
+          <thead><tr><th>Name</th><th>Role</th><th>Status</th></tr></thead>
+          <tbody>
+            {% for user in users %}
+              <tr>
+                <td>{{ user.full_name }}<br><span class="muted-small">{{ user.email }}</span></td>
+                <td>{{ user.role }}</td>
+                <td>{{ 'Active' if user.is_active else 'Inactive' }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="3">No users found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+{% endblock %}

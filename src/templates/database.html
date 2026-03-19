@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% set title = 'Database | HMS' %}
+
+{% block content %}
+  <div style="max-width: auto!importand;">
+    <h1>All Database Data</h1>
+    <p class="muted">Complete view of all records in the system.</p>
+
+    <!-- Users Section -->
+    <h2 style="margin-top: 24px; margin-bottom: 12px;">Users ({{ users|length }})</h2>
+    {% if users %}
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+        <thead>
+          <tr style="border-bottom: 2px solid #ddd;">
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">User ID</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Full Name</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Email</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Role</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Active</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.user_id }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.full_name }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.email }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.role }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.is_active }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">No users found.</p>
+    {% endif %}
+
+    <!-- Doctors Section -->
+    <h2 style="margin-top: 24px; margin-bottom: 12px;">Doctors ({{ doctors|length }})</h2>
+    {% if doctors %}
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+        <thead>
+          <tr style="border-bottom: 2px solid #ddd;">
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Doctor ID</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Name</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Email</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Speciality</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Consultation Fee</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Active</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doctor in doctors %}
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ doctor.doctor_id }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ doctor.doctor_name }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ doctor.doctor_email }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ doctor.speciality }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${{ doctor.consultation_fee }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ doctor.is_active }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ doctor.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">No doctors found.</p>
+    {% endif %}
+
+    <!-- Patients Section -->
+    <h2 style="margin-top: 24px; margin-bottom: 12px;">Patients ({{ patients|length }})</h2>
+    {% if patients %}
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+        <thead>
+          <tr style="border-bottom: 2px solid #ddd;">
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Patient ID</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Name</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Email</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Date of Birth</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Gender</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for patient in patients %}
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ patient.patient_id }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ patient.patient_name }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ patient.patient_email }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ patient.date_of_birth }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ patient.gender }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ patient.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">No patients found.</p>
+    {% endif %}
+
+    <!-- Appointments Section -->
+    <h2 style="margin-top: 24px; margin-bottom: 12px;">Appointments ({{ appointments|length }})</h2>
+    {% if appointments %}
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+        <thead>
+          <tr style="border-bottom: 2px solid #ddd;">
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Appointment ID</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Patient ID</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Doctor ID</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Date of Booking</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Time Slot</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Status</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Created At</th>
+            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Updated At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in appointments %}
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.appointment_id }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.patient_id }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.doctor_id }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.date_of_booking }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.time_slot }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.status }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.created_at }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ appointment.updated_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">No appointments found.</p>
+    {% endif %}
+  </div>
+{% endblock %}
