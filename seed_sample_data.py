@@ -101,11 +101,12 @@ def seed() -> None:
 
     users = [
         ("Admin User", "admin@hms.com", "Admin"),
-        ("Dr. Priya Sharma", "priya.sharma@hms.com", "Doctor"),
-        ("Dr. Arjun Mehta", "arjun.mehta@hms.com", "Doctor"),
-        ("Aisha Khan", "aisha.khan@hms.com", "Patient"),
-        ("Rohan Das", "rohan.das@hms.com", "Patient"),
-        ("Neha Iyer", "neha.iyer@hms.com", "Patient"),
+        ("Priya Sharma", "priya.sharma@hms.com", "Doctor"),
+        ("Arjun Mehta", "arjun.mehta@hms.com", "Doctor"),
+        ("Tris Joe", "tris.joe@hms.com", "Doctor"),
+        ("Sivin V", "rohan.das@hms.com", "Patient"),
+        ("Alankrita A", "neha.iyer@hms.com", "Patient"),
+        ("Anagha V", "anagha.v@hms.com", "Patient"),
     ]
 
     for full_name, email, role in users:
@@ -116,8 +117,9 @@ def seed() -> None:
     conn.execute("DELETE FROM Patient")
 
     doctors = [
-        ("Dr. Priya Sharma", "priya.sharma@hms.com", "Cardiology", 1200.0, 1),
-        ("Dr. Arjun Mehta", "arjun.mehta@hms.com", "Dermatology", 900.0, 1),
+        ("Priya Sharma", "priya.sharma@hms.com", "Cardiology", 1200.0, 1),
+        ("Arjun Mehta", "arjun.mehta@hms.com", "Dermatology", 900.0, 1),
+        ("Tris Joe", "tris.joe@hms.com", "Neurology", 1500.0, 1),
     ]
     for doctor in doctors:
         conn.execute(
@@ -126,9 +128,11 @@ def seed() -> None:
         )
 
     patients = [
-        ("Aisha Khan", "aisha.khan@hms.com", "1998-04-11", "Female"),
-        ("Rohan Das", "rohan.das@hms.com", "1994-09-23", "Male"),
-        ("Neha Iyer", "neha.iyer@hms.com", "2000-01-15", "Female"),
+        ("Anand Roy", "anand.roy@hms.com", "1998-04-11", "Male"),
+        ("Jacob Philip", "jacob.philip@hms.com", "2001-04-11", "Male"),
+        ("Sivin V", "sivin.v@hms.com", "1994-09-23", "Male"),
+        ("Alankrita A", "alankrita.a@hms.com", "2000-01-15", "Female"),
+        ("Anagha V", "anagha.v@hms.com", "1999-07-08", "Female"),
     ]
     for patient in patients:
         conn.execute(
@@ -147,11 +151,11 @@ def seed() -> None:
 
     today = date.today()
     appointments = [
-        (patients_by_email["aisha.khan@hms.com"], doctors_by_email["priya.sharma@hms.com"], str(today + timedelta(days=1)), "10:00 AM", "Scheduled"),
-        (patients_by_email["rohan.das@hms.com"], doctors_by_email["priya.sharma@hms.com"], str(today + timedelta(days=2)), "11:00 AM", "Scheduled"),
-        (patients_by_email["neha.iyer@hms.com"], doctors_by_email["arjun.mehta@hms.com"], str(today + timedelta(days=3)), "03:00 PM", "Scheduled"),
-        (patients_by_email["aisha.khan@hms.com"], doctors_by_email["arjun.mehta@hms.com"], str(today + timedelta(days=4)), "09:00 AM", "Completed"),
-        (patients_by_email["rohan.das@hms.com"], doctors_by_email["arjun.mehta@hms.com"], str(today + timedelta(days=5)), "04:00 PM", "Cancelled"),
+        (patients_by_email["sivin.v@hms.com"], doctors_by_email["priya.sharma@hms.com"], str(today + timedelta(days=1)), "10:00 AM", "Scheduled"),
+        (patients_by_email["alankrita.a@hms.com"], doctors_by_email["priya.sharma@hms.com"], str(today + timedelta(days=2)), "11:00 AM", "Scheduled"),
+        (patients_by_email["anagha.v@hms.com"], doctors_by_email["arjun.mehta@hms.com"], str(today + timedelta(days=3)), "03:00 PM", "Scheduled"),
+        (patients_by_email["jacob.philip@hms.com"], doctors_by_email["arjun.mehta@hms.com"], str(today + timedelta(days=4)), "09:00 AM", "Completed"),
+        (patients_by_email["anand.roy@hms.com"], doctors_by_email["arjun.mehta@hms.com"], str(today + timedelta(days=5)), "04:00 PM", "Cancelled"),
     ]
     for appointment in appointments:
         conn.execute(
